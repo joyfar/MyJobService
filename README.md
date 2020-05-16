@@ -15,7 +15,7 @@ You can add the MyJobService.exe to Windows Task Scheduler to run every minute. 
 
 Setup a SQL database to store the configuration information for jobs you want to run.  You can also define when and how frequently to run the job.  Then in Program::GetListOfJobsToRun(), change the method to pull the list of jobs to run from the DB.
 
-Finally, create your own DLL and implment your own job code.  Deploy your DLL (and any other dependencies) in the same folder as the application.  Add the configuration information into your SQL database.  The application will start running your jobs.
+Finally, create your own DLL with classes that implement _IJobTask_.  Deploy your DLL (and any other dependencies) in the same folder as the application.  Add the configuration information into your SQL database.  The application will start running your jobs.
 
 
 
