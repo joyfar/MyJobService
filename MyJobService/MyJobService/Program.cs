@@ -9,9 +9,9 @@ namespace MyJobService
 {
     class Program
     {
-        static List<Task> ThreadPool;
+        static List<Task> ThreadPool = new List<Task>();
         static int MaxThreads = 10;
-        static int WaitTimeMS = 1000;
+        static int WaitTimeMS = 5000;
         static AutoResetEvent ShutdownEvent;
 
         /// <summary>
@@ -78,25 +78,46 @@ namespace MyJobService
             try
             {
                 JobConfig config = (JobConfig)state;
-                IJobTask job = (IJobTask) Activator.CreateInstance(config.AssemblyName, config.TypeName);
+                IJobTask job = (IJobTask) Activator.CreateInstance(Type.GetType(config.TypeName));
                 job.Init(config);
                 job.Run();
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                //TO DO: Log error
+                Console.WriteLine(ex.ToString());
             }
 
         }
 
         /// <summary>
-        /// Get list of jobs to run.  Job configuration and information are stored in sql tables.
+        /// Get a list of jobs to run.  
+        /// For example, job configuration and information are stored in sql tables.
         /// Logic of what jobs need to run next are in a stored procedure.
+        /// For now, returns SimpleJob.
         /// </summary>
         /// <returns></returns>
         static IList<JobConfig> GetListOfJobsToRun()
         {
-            throw new NotImplementedException();
+            List<JobConfig> ret = new List<JobConfig>();
+
+            //TO DO:  Get a list of jobs to run.
+
+            ret.Add(createSimpleJob());
+            return ret;            
         }
+
+        static JobConfig createSimpleJob()
+        {
+            JobConfig config = new JobConfig(DateTime.UtcNow.Ticks
+            , ""
+            , "MyJobService.SimpleJob");
+
+            config.Config["input"] = "Hello World!";
+            
+            return config;
+
+        }
+
+
     }
 }
