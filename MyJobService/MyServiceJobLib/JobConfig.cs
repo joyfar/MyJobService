@@ -11,10 +11,17 @@ namespace MyJobServiceLib
     /// </summary>
     public class JobConfig
     {
+        public JobConfig(long jobId, string assemblyName, string typeName)
+        {
+            this.JobId = jobId;
+            this.AssemblyName = assemblyName;
+            this.TypeName = typeName;
+            this.Config = new NameValueCollection();
+        }
         /// <summary>
         /// A job will be assigned a unique id.
         /// </summary>
-        public int JobId { get; private set; }
+        public long JobId { get; private set; }
         
         /// <summary>
         /// The assembly name of where to find the class type.
@@ -30,5 +37,7 @@ namespace MyJobServiceLib
         /// Configuration information for the job, which are stored in sql tables.
         /// </summary>
         public NameValueCollection Config { get; private set; }
+
+        
     }
 }
